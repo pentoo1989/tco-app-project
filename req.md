@@ -56,7 +56,7 @@ Gelten für alle FRs, sofern nicht explizit abweichend dokumentiert.
 | FR-008 | Passwort zurücksetzen | Muss | `Umgesetzt` |
 | FR-009 | Abmelden | Muss | `Umgesetzt` |
 | FR-010 | Startseite | Muss | `Umgesetzt` |
-| FR-011 | Vereinsnews | Soll | `Teilweise umgesetzt` |
+| FR-011 | Vereinsnews | Soll | `Umgesetzt` |
 | FR-012 | Vereinstermine einsehen | Muss | `Umgesetzt` |
 | FR-013 | Termine verwalten | Soll | `Umgesetzt` |
 | FR-014 | Terminanmeldung | Soll | `Offen` |
@@ -187,12 +187,13 @@ Nach dem Login wird eine Startseite mit Vereinsname, aktuellen News, nächsten T
 ---
 
 ### FR-011 Vereinsnews
-**Priorität:** Soll · **Status:** `Teilweise umgesetzt`
+**Priorität:** Soll · **Status:** `Umgesetzt`
 
-News vom Vereinsblog werden chronologisch angezeigt. Artikelansicht inline in der App noch offen.
+News vom Vereinsblog werden chronologisch angezeigt. Artikel öffnen sich inline in der App.
 
 - Jede News zeigt: Titel, Datum, Vorschaubild, Kurztext
 - Artikel öffnet sich in der App (nicht im Browser)
+- Link zum Original-Artikel auf der Website vorhanden
 
 ---
 
