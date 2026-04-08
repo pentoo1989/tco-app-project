@@ -1,8 +1,8 @@
 # Funktionale Anforderungen – TCO App
 
-> Stand: 08.04.2026 · Technische Details → `PROJEKTPLAN.md` · Rollen → `roles.md`
+> Stand: 08.04.2026 · Technische Details → `PROJEKTPLAN.md`
 
-Die App ist die digitale Vereinsapp des **TCO** (Tauch-Club). Dieses Dokument beschreibt alle funktionalen Anforderungen als fachliche Arbeitsgrundlage für Planung, Implementierung und Priorisierung.
+Die App ist die digitale Vereinsapp des **TCO** (Tauch-Club). Dieses Dokument beschreibt alle funktionalen Anforderungen sowie das Rollen- und Rechtemodell als fachliche Arbeitsgrundlage für Planung, Implementierung und Priorisierung.
 
 | Priorität | Bedeutung |
 |-----------|-----------|
@@ -26,7 +26,7 @@ Gelten für alle FRs, sofern nicht explizit abweichend dokumentiert.
 - Alle Funktionen laufen auf **iOS, Android und Web**
 - Authentifizierung und Datenpersistenz über **Supabase**
 - Geschützte Bereiche nur für angemeldete und freigeschaltete Benutzer zugänglich
-- Rollenbasierte Zugriffskontrolle gemäß `roles.md`
+- Rollenbasierte Zugriffskontrolle (siehe Abschnitt Rollen und Rechte)
 - DSGVO-Konformität: personenbezogene Daten werden nur zweckgebunden gespeichert
 - Ladefehler und Fehlerzustände werden dem Benutzer verständlich angezeigt
 - Verpflichtende Profilfelder: Vorname, Nachname, E-Mail-Adresse
@@ -349,7 +349,52 @@ Mitglieder buchen Vereinsausrüstung (Regler, Flaschen, Jackets) für einen Zeit
 
 ---
 
+## Rollen und Rechte
+
+### Rollen
+
+| Rolle | Zweck |
+|-------|-------|
+| **Admin** | Vollzugriff auf alle Verwaltungsfunktionen |
+| **Vorstand** | Erweiterte Einsichts- und Verwaltungsrechte (fachlich noch zu schärfen) |
+| **Übungsleiter** | Verwaltung von Trainings, Terminen und Gruppen |
+| **Mitglied** | Standardrolle für alle normalen Benutzer |
+
+**Grundprinzipien:**
+- Jeder Benutzer hat mindestens eine Rolle, Mehrfachrollen sind möglich
+- Nicht freigeschaltete Konten haben keinen Zugriff auf geschützte Bereiche
+- Die Session enthält Rolle, Aktivierungs- und Kontostatus
+- UI-Sichtbarkeit allein ist keine ausreichende Sicherheitsmaßnahme
+
+### Rechte-Matrix (aktuell implementiert)
+
+| Funktion | Admin | Vorstand | Übungsleiter | Mitglied |
+|----------|:-----:|:--------:|:------------:|:--------:|
+| Anmelden, Profil bearbeiten, Abmelden | ✅ | ✅ | ✅ | ✅ |
+| Termine einsehen | ✅ | ✅ | ✅ | ✅ |
+| News, Startseite, Notrufnummern | ✅ | ✅ | ✅ | ✅ |
+| Octopost einsehen | ✅ | ✅ | ✅ | ✅ |
+| Preisliste einsehen | ✅ | ✅ | ✅ | ✅ |
+| Trainingsplan einsehen | ✅ | ✅ | ✅ | ✅ |
+| Termine anlegen/bearbeiten/absagen | ✅ | ✅ | ✅ | ❌ |
+| Trainingsplan pflegen | ✅ | ✅ | ✅ | ❌ |
+| Octopost hochladen/löschen | ✅ | ❌ | ❌ | ❌ |
+| Preisliste und PayPal-Link pflegen | ✅ | ❌ | ❌ | ❌ |
+| Notrufnummern pflegen | ✅ | ❌ | ❌ | ❌ |
+| Tauchsparten verwalten | ✅ | ❌ | ❌ | ❌ |
+| Benutzer verwalten (einsehen, Rollen, freischalten) | ✅ | ❌ | ❌ | ❌ |
+| Benutzer löschen | ✅ | ❌ | ❌ | ❌ |
+| Push-Nachrichten an alle senden | ✅ | ❌ | ❌ | ❌ |
+| Admin-Tab sichtbar | ✅ | ❌ | ❌ | ❌ |
+
+### Offene Punkte
+
+- Welche konkreten Rechte Vorstand gegenüber Mitgliedern erhalten soll
+- Ob Übungsleiter nur Termine der eigenen Sparte verwalten darf
+- Ob Vorstand ebenfalls Push-Benachrichtigungen bei Neuregistrierungen erhält
+
+---
+
 ## Bezug zu anderen Dokumenten
 
 - [`PROJEKTPLAN.md`](PROJEKTPLAN.md) – technische Planung und Architektur
-- [`roles.md`](roles.md) – Rollen- und Rechtemodell
