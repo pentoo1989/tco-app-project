@@ -30,6 +30,8 @@ Gelten für alle FRs, sofern nicht explizit abweichend dokumentiert.
 - DSGVO-Konformität: personenbezogene Daten werden nur zweckgebunden gespeichert
 - Ladefehler und Fehlerzustände werden dem Benutzer verständlich angezeigt
 - Verpflichtende Profilfelder: Vorname, Nachname, E-Mail-Adresse
+- iOS: Swipe-Back-Geste (von links nach rechts) funktioniert auf jeder Seite
+- Alle Modals und Screens respektieren die Safe Area (Dynamic Island, Notch, Home Indicator)
 
 ---
 
