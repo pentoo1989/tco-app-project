@@ -59,7 +59,7 @@ Gelten für alle FRs, sofern nicht explizit abweichend dokumentiert.
 | FR-011 | Vereinsnews | Soll | `Umgesetzt` |
 | FR-012 | Vereinstermine einsehen | Muss | `Umgesetzt` |
 | FR-013 | Termine verwalten | Soll | `Umgesetzt` |
-| FR-014 | Terminanmeldung | Soll | `Offen` |
+| FR-014 | Terminanmeldung | Soll | `Umgesetzt` |
 | FR-015 | Tauchsparten verwalten | Soll | `Umgesetzt` |
 | FR-016 | Push-Benachrichtigungen | Muss | `Umgesetzt` |
 | FR-017 | Push-Benachrichtigung bei Neuregistrierung | Soll | `Umgesetzt` |
@@ -69,11 +69,15 @@ Gelten für alle FRs, sofern nicht explizit abweichend dokumentiert.
 | FR-021 | Octopost (Vereinszeitschrift) | Soll | `Umgesetzt` |
 | FR-022 | Trainingsplan | Soll | `Umgesetzt` |
 | FR-023 | Threadbasierter Chat | Soll | `Offen` |
-| FR-024 | Umfragen und Abstimmungen | Soll | `Offen` |
+| FR-024 | Umfragen und Abstimmungen | Soll | `Umgesetzt` |
 | FR-025 | Mitgliederliste | Soll | `Offen` |
-| FR-026 | Seebedingungen | Soll | `Offen` |
-| FR-027 | Bildergalerie | Kann | `Offen` |
+| FR-026 | Seebedingungen | Soll | `Umgesetzt` |
+| FR-027 | Bildergalerie | Kann | `Umgesetzt` |
 | FR-028 | Materialbuchung | Soll | `Offen` |
+| FR-029 | Taucher-Rechner (EAD, MOD, Auftrieb, Rig) | Soll | `Umgesetzt` |
+| FR-030 | Gas-Blender Tool | Kann | `Umgesetzt` |
+| FR-031 | Decoplanner | Kann | `Umgesetzt` |
+| FR-032 | Deco2000 / Bergsee / Nitrox-Tabellen | Kann | `Umgesetzt` |
 
 ---
 
@@ -214,12 +218,12 @@ Admin, Vorstand und Übungsleiter können Termine anlegen, bearbeiten und absage
 ---
 
 ### FR-014 Terminanmeldung
-**Priorität:** Soll · **Status:** `Offen`
-
-Mitglieder können sich zu Terminen an- und abmelden. Teilnehmerliste ist für alle einsehbar.
+**Priorität:** Soll · **Status:** `Umgesetzt` Teilnehmerliste ist für alle einsehbar.
 
 - Anmeldung nach Terminablauf nicht mehr möglich
-- Optional: maximale Teilnehmerzahl je Termin
+- maximale Teilnehmerzahl je Termin soll möglich sein
+- Es soll möglich sein die Abmeldung zu sperren (zB für Kurse)
+- Es soll dem Admin möglich sein Teilnehmer von einem Termin zu entfernen
 
 ---
 
@@ -297,18 +301,21 @@ Admin, Vorstand und Übungsleiter pflegen Trainer-Einteilungen (Name, Datum, opt
 
 Vereinsinterne Kommunikation in Kanälen (Allgemein + spartenbezogene Kanäle). Nachrichten mit Thread-Antworten in Echtzeit (Supabase Realtime).
 
+- Jede Nachricht zeigt Absender (Vorname + Nachname) und Zeitstempel
 - Admin: Kanäle und Nachrichten verwalten
 - Mitglieder: eigene Nachrichten löschen
 - Ungelesene Nachrichten erkennbar
+- Dateianhänge: nein
+- Nachrichten sollen nach 1 Monat gelöscht werden
+- Privatchat nicht möglich
+- Kanäle sollen für Rollen eingeschränkt werden können z.B. Kanal für Übungsleiter.
+- Chat soll in der unteren Leiste als Symbol sein
 
-> **Offene Fragen:** Rollenbasierte Kanal-Einschränkungen; Dateianhänge; Nachrichtenaufbewahrungsfrist; Privatchat.
 
 ---
 
 ### FR-024 Umfragen und Abstimmungen
-**Priorität:** Soll · **Status:** `Offen`
-
-Admin, Vorstand und Übungsleiter erstellen Umfragen (Frage, Antwortoptionen, optionales Enddatum). Jedes Mitglied stimmt einmal ab. Ergebnis nach eigener Stimmabgabe sichtbar. Ersteller kann Umfrage vorzeitig beenden.
+**Priorität:** Soll · **Status:** `Umgesetzt` (Frage, Antwortoptionen, optionales Enddatum). Jedes Mitglied stimmt einmal ab. Ergebnis nach eigener Stimmabgabe sichtbar. Ersteller kann Umfrage vorzeitig beenden.
 
 > **Offene Fragen:** Anonymität; Zielgruppen nach Rolle/Sparte; Einfach- vs. Mehrfachauswahl; Integration in Chat.
 
@@ -324,20 +331,16 @@ Liste aller aktiven Mitglieder (Vorname, Nachname, Rollen, Profilbild) alphabeti
 ---
 
 ### FR-026 Seebedingungen
-**Priorität:** Soll · **Status:** `Offen`
-
-Mitglieder tragen aktuelle Seebedingungen ein (Wassertemperatur, Sichtweite, Kommentar, bis zu 3 Fotos). Aktueller Stand und letzte 10 Einträge als Verlauf sichtbar. Admin kann Einträge/Bilder löschen. Tauchplatzkarte später einbettbar.
+**Priorität:** Soll · **Status:** `Umgesetzt` (Wassertemperatur, Sichtweite, Kommentar, bis zu 3 Fotos). Aktueller Stand und letzte 10 Einträge als Verlauf sichtbar. Admin kann Einträge/Bilder löschen. Tauchplatzkarte später einbettbar.
 
 > **Offene Fragen:** Tiefenspezifische Messwerte; Benachrichtigungen bei neuen Einträgen.
 
 ---
 
 ### FR-027 Bildergalerie
-**Priorität:** Kann · **Status:** `Offen`
+**Priorität:** Kann · **Status:** `Umgesetzt`
 
-Mitglieder teilen Fotos in Alben (nach Veranstaltung/Datum). Vollbildansicht. Admin verwaltet Alben. Bilder in Supabase Storage.
-
-> **Offene Fragen:** Wer Alben anlegen darf; Kommentare/Likes; Speicherlimit; automatische Komprimierung.
+Mitglieder teilen Fotos in Alben. Vollbildansicht. Jedes Mitglied kann Alben anlegen und Fotos hochladen. Eigene Fotos löschen möglich, Admin kann alle löschen. Bilder in Supabase Storage (Bucket `photos`).
 
 ---
 
@@ -347,6 +350,121 @@ Mitglieder teilen Fotos in Alben (nach Veranstaltung/Datum). Vollbildansicht. Ad
 Mitglieder buchen Vereinsausrüstung (Regler, Flaschen, Jackets) für einen Zeitraum. Verfügbarkeit in Echtzeit sichtbar. Admin verwaltet Gegenstände. Admin/Vorstand sehen und stornieren alle Buchungen.
 
 > **Offene Fragen:** Maximale Buchungsdauer; Warteliste; Zustandserfassung (defekt/Wartung); Kopplung an Termine.
+
+---
+
+### FR-029 Taucher-Rechner (EAD, MOD, Auftrieb, Balanced Rig)
+**Priorität:** Soll · **Status:** `Umgesetzt`
+
+Sammlung taucherischer Berechnungstools, alle lokal (clientseitig, kein Server-Call). Ergebnisse werden sofort bei Eingabe neu berechnet. Keine Speicherung der Eingaben.
+
+**FR-030a – EAD (Equivalent Air Depth):**
+Berechnet die äquivalente Lufttiefe für ein Nitrox-Gemisch.
+- Eingabe: Tauchtiefe (m), O₂-Anteil (%)
+- Ausgabe: EAD in Metern
+- Formel: `EAD = (Tiefe + 10) × (1 − fO₂) / 0,79 − 10`
+
+**FR-030b – MOD (Maximum Operating Depth):**
+Berechnet die maximale Betriebstiefe für ein Gemisch bei gegebener ppO₂-Grenze.
+- Eingabe: O₂-Anteil (%), ppO₂-Grenzwert (Standard 1,4 bar, einstellbar bis 1,6 bar)
+- Ausgabe: MOD in Metern
+- Formel: `MOD = (ppO₂ / fO₂ − 1) × 10`
+- Farbliche Warnung wenn ppO₂ > 1,4 bar
+
+**FR-030c – Flaschen-Auftriebsberechnung:**
+Berechnet den Auftrieb einer Stahlflasche leer vs. voll.
+- Eingabe: Flaschengröße (l), Arbeitsdruck (bar), Leergewicht (kg), Materialauftrieb (kg, vorausgefüllt für gängige Typen)
+- Ausgabe: Auftrieb leer (kg), Auftrieb voll (kg), Differenz
+- Hinweis: positive Zahl = Auftrieb, negative Zahl = Abtrieb
+
+**FR-030d – Balanced Rig Rechner:**
+Hilft dem Taucher, sein Tauchequipment optimal auszubalancieren (Nullauftrieb an der Oberfläche am Ende des Tauchgangs).
+- Eingabe: Körpergewicht (kg), Neoprendicke oder Trockensuit, Salzwasser/Süßwasser, Flasche(n) mit Auftriebswerten, Jacket-Typ mit Liftkapazität, aktuelles Blei (kg)
+- Ausgabe: Empfohlenes Blei (kg), Systemgesamtauftrieb, Hinweis ob Über-/Unterbleit
+- Vordefinierte Flaschenkonfigurationen: 10 l Stahl, 12 l Stahl, D8.5, D10, D12
+- Dry-Suit-Inflation wird nicht berücksichtigt
+
+---
+
+### FR-030 Gas-Blender Tool
+**Priorität:** Kann · **Status:** `Umgesetzt`
+
+Unterstützt Gasmischer beim Berechnen von Nitrox- und Trimix-Mischungen. Alle Berechnungen lokal, kein Server-Call.
+
+**Teilfunktionen:**
+
+**Partial-Pressure Blending (PP-Blending):**
+- Eingabe: Ziel-O₂% (und optional He%), Zieldruck (bar), Restdruck in der Flasche (bar), Restgasanalyse (O₂%, He%)
+- Ausgabe: Aufzufüllende O₂-Menge (bar), aufzufüllende He-Menge (bar), Restluft (bar), Zieldruck-Kontrolle
+- Schrittweise Anleitung: 1. O₂ auffüllen, 2. He auffüllen, 3. mit Luft/Nitrox auffüllen
+
+**Continuous-Flow / Blending Stick:**
+- Eingabe: Ziel-O₂%, Zieldruck, verfügbare Quellgase (O₂-Anteil und Druck je Quelle)
+- Ausgabe: Mischverhältnis der Quellen in Prozent und bar
+
+**Mischungskontrolle / Analyse:**
+- Eingabe: Gemessener O₂-Anteil (%), Fülldruck (bar)
+- Ausgabe: MOD bei ppO₂ 1,4 und 1,6 bar, EAD
+
+> **Offene Fragen:** Trimix (He-Anteil) als Pflichtfeld oder optional; Gesetzliche Hinweise/Haftungsausschluss; Einheitenwahl bar/PSI.
+
+---
+
+### FR-031 Decoplanner
+**Priorität:** Kann · **Status:** `Umgesetzt`
+
+Interaktives Tool zur Planung von Dekotauchgängen. Berechnet Dekostopps, Gesamtzeit und Gasverbrauch.
+
+**Eingaben:**
+- Tiefenprofil: max. Tiefe (m), Grundzeit (min), Abstiegsrate (m/min), Aufstiegsrate (m/min)
+- Gasgemische: Grundgas (O₂%, He%), Dekogase (bis zu 3, je mit Wechseltiefe)
+- Algorithmus-Parameter: Gradient Factors (GF Low / GF High), Höhe über NN (m)
+- Wassertyp: Salz- oder Süßwasser
+
+**Ausgaben:**
+- Dekostopps-Tabelle: Tiefe (m), Haltezeit (min), Gas
+- Gesamtaufstiegszeit (min)
+- Gasverbrauchsplan je Gas (l, bei gegebenem SAC-Wert)
+- TTS (Time To Surface)
+- CNS O₂-Belastung (%)
+- Hinweis bei Überschreitung von ppO₂-Grenzwerten
+
+**Algorithmus:**
+- Bühlmann ZHL-16C mit Gradient Factors als Basis
+- Reine Clientberechnung in TypeScript
+
+> **Offene Fragen:** Repetitive Tauchgänge / Surface Interval; Multi-Level-Profile; VPM-B als alternative Modell-Option; Export der Deko-Tabelle als PDF; Integration mit Logbuch (FR-029).
+
+---
+
+### FR-032 Deco2000 / Bergsee / Nitrox-Tabellen
+**Priorität:** Kann · **Status:** `Umgesetzt`
+
+Digitale Nachschlagewerke klassischer Tauchtabellen als Read-only-Referenz in der App. Kein interaktiver Rechner, sondern Tabellenanzeige zum Nachschlagen.
+
+**Enthaltene Tabellen:**
+
+**Deco2000 (Deutsche Sporttaucher-Dekotabelle):**
+- Standardtabelle für Sporttaucher in Deutschland
+- Nullzeittabelle und Dekostopptabelle
+- Wiederholungstauchgänge mit Gruppenintervall
+- Anzeige als scrollbare Tabelle mit Suchfunktion (Tiefe + Zeit → Gruppe/Stopps)
+
+**Bergsee-Korrektur:**
+- Höhenkorrekturtabelle für Tauchgänge ab 300 m über NN
+- Eingabe: Höhe (m), Gruppe aus Vortauchgang → Korrigierte Gruppe
+- Als separater Tab oder Zusatzabschnitt zur Deco2000-Tabelle
+
+**Nitrox-Tabelle:**
+- Standardnitrox-Tabelle (CMAS/PADI-Stil)
+- Für EAN32 und EAN36
+- Anzeige: Tiefe, Nullzeit, MOD, ppO₂
+
+**Darstellung:**
+- Farbcodierung der Dekostufen (grün = keine Deko, gelb = Stopptime < 10 min, rot = > 10 min)
+- Zoomfähige Tabellen auf kleinen Bildschirmen (horizontales Scrollen)
+
+> **Offene Fragen:** Urheberrechtliche Klärung der Tabelleninhalte (insb. Deco2000); ob Tabellenwerte manuell einzupflegen oder aus lizenzierten Quellen zu übernehmen sind; Aktualität der Tabellen (letzte offizielle Version).
 
 ---
 
