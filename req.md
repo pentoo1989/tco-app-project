@@ -1,6 +1,6 @@
 # Funktionale Anforderungen – TCO App
 
-> Stand: 08.04.2026 · Technische Details → `PROJEKTPLAN.md`
+> Stand: 12.04.2026 · Technische Details → `PROJEKTPLAN.md`
 
 Die App ist die digitale Vereinsapp des **TCO** (Tauch-Club). Dieses Dokument beschreibt alle funktionalen Anforderungen sowie das Rollen- und Rechtemodell als fachliche Arbeitsgrundlage für Planung, Implementierung und Priorisierung.
 
@@ -28,7 +28,9 @@ Gelten für alle FRs, sofern nicht explizit abweichend dokumentiert.
 - Geschützte Bereiche nur für angemeldete und freigeschaltete Benutzer zugänglich
 - Rollenbasierte Zugriffskontrolle (siehe Abschnitt Rollen und Rechte)
 - DSGVO-Konformität: personenbezogene Daten werden nur zweckgebunden gespeichert
-- Ladefehler und Fehlerzustände werden dem Benutzer verständlich angezeigt
+- Ladefehler und Fehlerzustände werden dem Benutzer verständlich angezeigt, mit "Erneut versuchen"-Button
+- Kritische Inhalte (Notrufnummern, Trainingsplan, Chat-Verläufe) werden lokal gecacht und bleiben auch ohne Internetverbindung lesbar
+- Schreiboperationen (Anmelden, Abstimmen, Foto hochladen etc.) zeigen Fehlermeldungen statt still zu scheitern
 - Verpflichtende Profilfelder: Vorname, Nachname, E-Mail-Adresse
 - iOS: Swipe-Back-Geste (von links nach rechts) funktioniert auf jeder Seite
 - Alle Modals und Screens respektieren die Safe Area (Dynamic Island, Notch, Home Indicator)
@@ -70,7 +72,7 @@ Gelten für alle FRs, sofern nicht explizit abweichend dokumentiert.
 | FR-020 | Preisliste Vereinsheim | Soll | `Umgesetzt` |
 | FR-021 | Octopost (Vereinszeitschrift) | Soll | `Umgesetzt` |
 | FR-022 | Trainingsplan | Soll | `Umgesetzt` |
-| FR-023 | Threadbasierter Chat | Soll | `Offen` |
+| FR-023 | Threadbasierter Chat | Soll | `Umgesetzt` |
 | FR-024 | Umfragen und Abstimmungen | Soll | `Umgesetzt` |
 | FR-025 | Mitgliederliste | Soll | `Offen` |
 | FR-026 | Seebedingungen | Soll | `Umgesetzt` |
@@ -155,6 +157,7 @@ Angemeldeter Benutzer kann eigene Profildaten einsehen und erlaubte Felder bearb
 - Pflichtfelder: Vorname, Nachname, E-Mail-Adresse
 - Passwort änderbar über Profil (aktuelles Passwort erforderlich, min. 8 Zeichen)
 - Nach Passwortänderung bleibt Session aktiv
+- Globaler Schalter für Chat-Push-Benachrichtigungen
 
 > **Offene Fragen:** Ob E-Mail-Änderung erneut bestätigt werden muss.
 
@@ -241,7 +244,8 @@ Admin kann Tauchsparten anlegen, umbenennen und löschen (nur wenn keine Termine
 
 App fordert beim ersten Start Berechtigung an. Push-Tokens werden in der Datenbank gespeichert und beim Abmelden entfernt. Funktioniert auch bei geschlossener App (iOS und Android). Web optional.
 
-- Benutzer kann Push-Benachrichtigungen im Profil global und je Typ (Chat, Termine, Umfragen) steuern
+- Benutzer kann Push-Benachrichtigungen im Profil global (Chat) steuern
+- Pro Chat-Kanal separat aktivierbar/deaktivierbar (Glocken-Button im Kanal-Header)
 
 ---
 
@@ -275,7 +279,7 @@ Tauchrelevante Notrufnummern (Notruf 112, DAN Europe, Druckkammer) ohne Login ei
 ### FR-020 Preisliste Vereinsheim
 **Priorität:** Soll · **Status:** `Umgesetzt`
 
-Preisliste für Getränke/Snacks, nach Kategorie gruppiert. Admin pflegt Einträge und PayPal-Link. Tipp auf Link öffnet PayPal-App oder Browser.
+Preisliste für Getränke/Snacks, nach Kategorie gruppiert. Admin pflegt Einträge und PayPal-Link. Artikel können mit +/- Buttons ausgewählt werden; Gesamtsumme wird in einer fixen Leiste am unteren Bildschirmrand angezeigt und direkt an PayPal übergeben. Auswahl wird lokal gecacht (bleibt nach App-Wechsel erhalten).
 
 > **Offene Fragen:** Ob Kategorien frei definierbar oder fest vorgegeben sein sollen.
 
@@ -299,19 +303,22 @@ Admin, Vorstand und Übungsleiter pflegen Trainer-Einteilungen (Name, Datum, opt
 ---
 
 ### FR-023 Threadbasierter Chat
-**Priorität:** Soll · **Status:** `Offen`
+**Priorität:** Soll · **Status:** `Umgesetzt`
 
-Vereinsinterne Kommunikation in Kanälen (Allgemein + spartenbezogene Kanäle). Nachrichten mit Thread-Antworten in Echtzeit (Supabase Realtime).
+Vereinsinterne Kommunikation in Kanälen (Allgemein + spartenbezogene Kanäle). Nachrichten in Echtzeit (Supabase Realtime).
 
 - Jede Nachricht zeigt Absender (Vorname + Nachname) und Zeitstempel
-- Admin: Kanäle und Nachrichten verwalten
+- Admin: Kanäle anlegen, umbenennen, beschreiben, löschen; Nachrichten moderieren
 - Mitglieder: eigene Nachrichten löschen
-- Ungelesene Nachrichten erkennbar
+- Ungelesene Nachrichten als rote Zahl auf dem Chat-Tab-Button und auf jedem Kanal-Eintrag sichtbar
+- Nachrichten werden als gelesen markiert wenn der Kanal geöffnet wird
+- Push-Benachrichtigung bei neuer Nachricht — global im Profil und pro Kanal (Glocken-Button) steuerbar
+- Chat-Verläufe werden lokal gecacht (offline lesbar)
 - Dateianhänge: nein
 - Nachrichten sollen nach 1 Monat gelöscht werden
 - Privatchat nicht möglich
-- Kanäle sollen für Rollen eingeschränkt werden können z.B. Kanal für Übungsleiter.
-- Chat soll in der unteren Leiste als Symbol sein
+- Kanäle sollen für Rollen eingeschränkt werden können (z.B. Kanal nur für Übungsleiter)
+- Chat ist in der unteren Tab-Leiste als Symbol sichtbar
 
 
 ---
