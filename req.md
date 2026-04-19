@@ -1,6 +1,6 @@
 # Funktionale Anforderungen – TCO App
 
-> Stand: 12.04.2026 · Technische Details → `PROJEKTPLAN.md`
+> Stand: 18.04.2026 · Technische Details → `PROJEKTPLAN.md`
 
 Die App ist die digitale Vereinsapp des **TCO** (Tauch-Club). Dieses Dokument beschreibt alle funktionalen Anforderungen sowie das Rollen- und Rechtemodell als fachliche Arbeitsgrundlage für Planung, Implementierung und Priorisierung.
 
@@ -81,7 +81,11 @@ Gelten für alle FRs, sofern nicht explizit abweichend dokumentiert.
 | FR-029 | Taucher-Rechner (EAD, MOD, Auftrieb, Rig) | Soll | `Umgesetzt` |
 | FR-030 | Gas-Blender Tool | Kann | `Umgesetzt` |
 | FR-031 | Decoplanner | Kann | `Umgesetzt` |
-| FR-032 | Deco2000 / Bergsee / Nitrox-Tabellen | Kann | `Umgesetzt` |
+| FR-032 | Deco2000 / Bergsee / Nitrox-Tabellen | Kann | `Teilweise` |
+| FR-033 | Standortkarte (Google Maps) | Kann | `Offen` |
+| FR-034 | Fehler-Monitoring (Sentry) | Soll | `Offen` |
+| FR-035 | Clipboard-Integration | Kann | `Offen` |
+| FR-036 | Cross-Tab Synchronisation (Web) | Kann | `Offen` |
 
 ---
 
@@ -119,7 +123,7 @@ Jedes Konto hat mindestens eine Rolle (Admin, Vorstand, Übungsleiter, Mitglied)
 - Konto ohne Rolle kann sich nicht einloggen
 - Mehrfachrollen sind möglich
 
-> **Offene Fragen:** Ob Rollen manuell oder regelbasiert vergeben werden.
+> **Offene Fragen:** Ob Rollen manuell oder regelbasiert vergeben werden. → Administratoren können Rollen bereits manuell über die Benutzerverwaltung vergeben/entziehen.
 
 ---
 
@@ -132,7 +136,7 @@ Vorstand und Übungsleiter erhalten gegenüber Mitgliedern erweiterte Rechte. Um
 - Übungsleiter: mindestens ein fachlicher Verantwortungsbereich (Trainings/Termine)
 - Rechte sind von Admin-Rechten getrennt
 
-> **Offene Fragen:** Welche Daten Vorstand sieht; ob Übungsleiter nur Termine der eigenen Sparte verwaltet.
+> **Offene Fragen:** Welche Daten Vorstand sieht; ob Übungsleiter nur Termine der eigenen Sparte verwaltet. → Technische Basis über `useTrainerVisibility`-Hooks implementiert, aber fachliche Rechte für Vorstand und Übungsleiter sind noch nicht final definiert.
 
 ---
 
@@ -218,7 +222,7 @@ Alle angemeldeten Benutzer sehen Termine mit Datum, Titel, Beschreibung und Spar
 
 Admin, Vorstand und Übungsleiter können Termine anlegen, bearbeiten und absagen. Datum/Uhrzeit über nativen Picker. Abgesagte Termine sind als solche erkennbar.
 
-> **Offene Fragen:** Ob Übungsleiter nur Termine der eigenen Sparte verwalten darf.
+> **Offene Fragen:** Ob Übungsleiter nur Termine der eigenen Sparte verwalten darf. → Noch nicht final geklärt, technische Einschränkung über `useTrainerVisibility` möglich.
 
 ---
 
@@ -447,33 +451,81 @@ Interaktives Tool zur Planung von Dekotauchgängen. Berechnet Dekostopps, Gesamt
 ---
 
 ### FR-032 Deco2000 / Bergsee / Nitrox-Tabellen
-**Priorität:** Kann · **Status:** `Umgesetzt`
+**Priorität:** Kann · **Status:** `Teilweise`
 
 Digitale Nachschlagewerke klassischer Tauchtabellen als Read-only-Referenz in der App. Kein interaktiver Rechner, sondern Tabellenanzeige zum Nachschlagen.
 
-**Enthaltene Tabellen:**
+**Implementiert:**
+- ✅ Deco2000-PDF als statisches Asset eingebettet (`tauchtabellen.tsx`)
+- ✅ PDF-Renderer nativ (iOS/Android) und via iframe (Web)
 
-**Deco2000 (Deutsche Sporttaucher-Dekotabelle):**
-- Standardtabelle für Sporttaucher in Deutschland
-- Nullzeittabelle und Dekostopptabelle
-- Wiederholungstauchgänge mit Gruppenintervall
-- Anzeige als scrollbare Tabelle mit Suchfunktion (Tiefe + Zeit → Gruppe/Stopps)
-
-**Bergsee-Korrektur:**
-- Höhenkorrekturtabelle für Tauchgänge ab 300 m über NN
-- Eingabe: Höhe (m), Gruppe aus Vortauchgang → Korrigierte Gruppe
-- Als separater Tab oder Zusatzabschnitt zur Deco2000-Tabelle
-
-**Nitrox-Tabelle:**
-- Standardnitrox-Tabelle (CMAS/PADI-Stil)
-- Für EAN32 und EAN36
-- Anzeige: Tiefe, Nullzeit, MOD, ppO₂
-
-**Darstellung:**
-- Farbcodierung der Dekostufen (grün = keine Deko, gelb = Stopptime < 10 min, rot = > 10 min)
-- Zoomfähige Tabellen auf kleinen Bildschirmen (horizontales Scrollen)
+**Noch offen:**
+- ❌ Bergsee-Korrekturtabelle
+- ❌ Nitrox-Tabelle (EAN32/EAN36)
 
 > **Offene Fragen:** Urheberrechtliche Klärung der Tabelleninhalte (insb. Deco2000); ob Tabellenwerte manuell einzupflegen oder aus lizenzierten Quellen zu übernehmen sind; Aktualität der Tabellen (letzte offizielle Version).
+
+---
+
+### FR-033 Standortkarte (Google Maps)
+**Priorität:** Kann · **Status:** `Offen`
+
+Tauchplätze, Vereinsgelände und Treffpunkte werden auf einer interaktiven Karte angezeigt. Mitglieder können Orte auf einen Blick finden und per Navigation öffnen.
+
+- Karte zeigt vordefinierte Orte als Marker (Tauchseen, Vereinsheim, Treffpunkte)
+- Tipp auf Marker zeigt Name, kurze Beschreibung und Koordinaten
+- "In Maps öffnen"-Button startet externe Navigation (Google Maps / Apple Maps)
+- Admin pflegt Orte (Name, Koordinaten, Beschreibung)
+- Karte ohne Login einsehbar (öffentlich)
+- Integration: Google Maps SDK (Web) bzw. react-native-maps (iOS/Android)
+
+> **Offene Fragen:** Ob Mitglieder eigene Orte vorschlagen können; ob Routen zwischen Orten dargestellt werden sollen; Datenschutz bei Echtzeit-Standortfreigabe.
+
+---
+
+### FR-034 Fehler-Monitoring (Sentry)
+**Priorität:** Soll · **Status:** `Offen`
+
+Unbehandelte Fehler und Abstürze werden automatisch an Sentry gemeldet, damit Probleme in Produktion frühzeitig erkannt und behoben werden können.
+
+- Sentry SDK wird in iOS-, Android- und Web-Build eingebunden
+- Unbehandelte Exceptions und Promise-Rejections werden automatisch erfasst
+- Jede Session enthält anonymisierte Nutzerkennung (User-ID, Rolle — keine E-Mail)
+- Source Maps werden für den Web-Build hochgeladen (lesbare Stack-Traces)
+- Fehler aus Edge Functions (Push, Reminder) werden ebenfalls gemeldet
+- Keine personenbezogenen Daten (E-Mail, Name) in Sentry-Events
+
+> **Offene Fragen:** Ob Performance-Monitoring (Ladezeiten, Slow Transactions) zusätzlich aktiviert werden soll; Sentry-Projekt selbst gehostet oder Sentry Cloud.
+
+---
+
+### FR-035 Clipboard-Integration
+**Priorität:** Kann · **Status:** `Offen`
+
+Benutzer können relevante Inhalte mit einem Tipp in die Zwischenablage kopieren, um sie außerhalb der App weiterzuverwenden.
+
+- Chat-Nachricht: Langer Druck → "Kopieren"-Option
+- Termin-Details: "Teilen"-Button kopiert Titel, Datum und Beschreibung als Text
+- Notrufnummern: Tipp auf Nummer kopiert sie in die Zwischenablage (zusätzlich zum Wähler)
+- Kurze Bestätigung ("Kopiert") nach Clipboard-Aktion sichtbar
+- Umsetzung via Expo Clipboard API (`expo-clipboard`)
+
+> **Offene Fragen:** Ob Links zu Terminen oder Chat-Nachrichten als Deep-Links kopierbar sein sollen.
+
+---
+
+### FR-036 Cross-Tab Synchronisation (Web)
+**Priorität:** Kann · **Status:** `Offen`
+
+Wenn die Web-App in mehreren Browser-Tabs gleichzeitig geöffnet ist, bleiben Daten und Authentifizierungsstatus über alle Tabs hinweg synchron.
+
+- Abmelden in einem Tab meldet alle anderen Tabs automatisch ab
+- Neue Chat-Nachricht erscheint in allen geöffneten Tab-Instanzen
+- Unread-Badges werden tab-übergreifend aktualisiert (kein veralteter Zähler)
+- Implementierung via `BroadcastChannel API` oder `SharedWorker`
+- Nur relevant für Web-Plattform; iOS/Android nicht betroffen
+
+> **Offene Fragen:** Ob Tab-Synchronisation auch Formular-Zustände (z.B. offene Modals) abgleichen soll.
 
 ---
 
@@ -520,6 +572,34 @@ Digitale Nachschlagewerke klassischer Tauchtabellen als Read-only-Referenz in de
 - Welche konkreten Rechte Vorstand gegenüber Mitgliedern erhalten soll
 - Ob Übungsleiter nur Termine der eigenen Sparte verwalten darf
 - Ob Vorstand ebenfalls Push-Benachrichtigungen bei Neuregistrierungen erhält
+
+> **Hinweis:** Die technische Basis für konfigurierbare Berechtigungen ist umgesetzt — alle Rechte sind über `useTrainerVisibility`-Hooks und Admin-Einstellungen konfigurierbar, keine hardcodierten Rollen mehr in der Datenbank.
+
+---
+
+## Umsetzungsstand
+
+> Stand: 19.04.2026 · geprüft gegen Codebase `tco-weinheim-app/`
+
+| Kategorie | Anzahl | Details |
+|-----------|--------|---------|
+| ✅ Umgesetzt | 27 | FR-001 bis FR-030 (siehe Übersicht) |
+| ⚠️ Teilweise | 1 | FR-032 — Deco2000-PDF eingebettet, Bergsee + Nitrox fehlen |
+| ⏳ In Klärung | 1 | FR-004 — Rollenbereiche Vorstand/Übungsleiter |
+| ❌ Offen | 7 | FR-018, FR-025, FR-028, FR-033, FR-034, FR-035, FR-036 |
+| **Gesamt** | **36** | **75 % abgeschlossen** |
+
+### Noch zu implementierende Anforderungen
+
+| ID | Titel | Priorität | Aufwand |
+|----|-------|-----------|---------|
+| FR-025 | Mitgliederliste | Soll | Mittel — Liste aller aktiven Mitglieder mit Profilbild, Filter |
+| FR-028 | Materialbuchung | Soll | Hoch — Verfügbarkeitslogik, Buchungs-WS, Admin-Storno |
+| FR-033 | Standortkarte (Google Maps) | Kann | Mittel — Google Maps SDK, Marker-Verwaltung durch Admin |
+| FR-034 | Fehler-Monitoring (Sentry) | Soll | Niedrig — Sentry SDK einbinden, Source Maps hochladen |
+| FR-035 | Clipboard-Integration | Kann | Niedrig — expo-clipboard, Copy-Actions auf Chat/Termine/Notfall |
+| FR-036 | Cross-Tab Synchronisation (Web) | Kann | Niedrig — BroadcastChannel API für Auth + Unread-Sync |
+| FR-018 | E-Mail-Benachrichtigungen | Kann | Mittel — Edge Function für E-Mail-Versand, Profileinstellungen |
 
 ---
 
